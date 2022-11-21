@@ -31,6 +31,7 @@
         || defined(SRC1_DT_F16) || defined(DST_DT_F16) || defined(WEI_DT_F16) \
         || defined(BIA_DT_F16) || defined(ACC_DT_F16)
 #pragma OPENCL EXTENSION cl_khr_fp16 : enable
+#pragma OPENCL EXTENSION cl_khr_subgroups : enable
 #endif
 
 #if DT_F32 == 1

@@ -33,7 +33,7 @@ status_t ocl_gpu_device_info_t::init_arch(engine_t *engine) {
     err = clGetDeviceInfo(
             device, CL_DEVICE_VENDOR_ID, sizeof(cl_uint), &vendor_id, nullptr);
     OCL_CHECK(err);
-    if (vendor_id != intel_vendor_id) return status::success;
+    //if (vendor_id != intel_vendor_id) return status::success;
 
     cl_context context
             = clCreateContext(nullptr, 1, &device, nullptr, nullptr, &err);
