@@ -60,10 +60,13 @@ else()
 endif()
 
 if(DNNL_ENABLE_JIT_PROFILING OR DNNL_ENABLE_ITT_TASKS)
+message(WARNING "src CMakeLists.txt DNNL_ENABLE_JIT_PROFILING OR DNNL_ENABLE_ITT_TASKS branch")
     if (UNIX AND NOT APPLE)
         # Not every compiler adds -ldl automatically
         list(APPEND EXTRA_SHARED_LIBS "${CMAKE_DL_LIBS}")
     endif()
+else()
+message(WARNING "src CMakeLists.txt NOT!!!! DNNL_ENABLE_JIT_PROFILING OR DNNL_ENABLE_ITT_TASKS branch")
 endif()
 
 if(DNNL_EXPERIMENTAL)
