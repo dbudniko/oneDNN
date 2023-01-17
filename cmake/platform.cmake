@@ -66,7 +66,7 @@ macro(platform_unix_and_mingw_noexcept_ccxx_flags var)
 endmacro()
 
 macro(platform_gnu_x64_arch_ccxx_flags var)
-    set(${var} "-msse4.1")
+    # set(${var} "-msse4.1")
 endmacro()
 
 macro(platform_gnu_nowarn_ccxx_flags var gnu_version)
