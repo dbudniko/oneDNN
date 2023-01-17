@@ -179,13 +179,13 @@ option(DNNL_ENABLE_JIT_PROFILING
     runtime with VTune Amplifier (on by default). Without the
     registrations, VTune Amplifier would report data collected inside
     the kernels as `outside any known module`."
-    ON)
+    OFF)
 
 option(DNNL_ENABLE_ITT_TASKS
     "Enable ITT Tasks tagging feature and tag all primitive execution 
     (on by default). VTune Amplifier can group profiling results based 
     on those ITT tasks and show corresponding timeline information."
-    ON)
+    OFF)
 
 # ===================
 # Engine capabilities
