@@ -52,7 +52,10 @@ inline void findDeviceBinary(const std::vector<uint8_t> &binary, const SElf64Sec
     // Read ELF
     auto *eheader = (const SElf64Header *)elf_binary;
 
+    //if(DNNL_TARGET_ARCH STREQUAL "X86")
     // Check ELF header
+    std::cout << "findDeviceBinary eheader->Magic " << eheader->Magic <<
+        " ELF_MAGIC "  << ELF_MAGIC << std::endl;
     if (eheader->Magic != ELF_MAGIC)
         throw bad_elf();
 
