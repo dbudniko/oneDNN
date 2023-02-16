@@ -19,6 +19,7 @@
 
 #include <cstring>
 #include <vector>
+#include <iostream>
 
 #include "elf_structs.hpp"
 #include "neo_structs.hpp"
