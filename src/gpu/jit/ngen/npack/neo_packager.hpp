@@ -54,12 +54,14 @@ inline void findDeviceBinary(const std::vector<uint8_t> &binary, const SElf64Sec
     auto *eheader = (const SElf64Header *)elf_binary;
 
     // Check ELF header
-    if (DNNL_TARGET_ARCH STREQUAL "X86") {
-        std::cout << "findDeviceBinary eheader->Magic " << eheader->Magic <<
-            " ELF_MAGIC "  << ELF_MAGIC << std::endl;
-        if (eheader->Magic != ELF_MAGIC)
-            throw bad_elf();
-    }
+    std::cout << "findDeviceBinary eheader->Magic " << eheader->Magic <<
+        " ELF_MAGIC "  << ELF_MAGIC << std::endl;
+#ifndef NEO_IS_NOT_AVAILABLE
+    if (eheader->Magic != ELF_MAGIC)
+        throw bad_elf();
+#else
+    std::cout << "findDeviceBinary NEO_IS_NOT_AVAILABLE and ELF_MAGIC is not checked" << std::endl;
+#endif
 
     // Look for device binary in section table.
     auto sheader = (const SElf64SectionHeader *)(elf_binary + eheader->SectionHeadersOffset);
@@ -79,15 +81,31 @@ inline void findDeviceBinary(const std::vector<uint8_t> &binary, const SElf64Sec
     std::cout << "findDeviceBinary  sizeof(SProgramBinaryHeader) "
         <<  sizeof(SProgramBinaryHeader) << std::endl;
 
-
+#ifndef NEO_IS_NOT_AVAILABLE
     if (!found_dev_binary || sheader->DataSize < sizeof(SProgramBinaryHeader))
         throw no_binary_section();
+#else
+    std::cout << "findDeviceBinary NEO_IS_NOT_AVAILABLE and found_dev_binary and DataSize are not checked"
+        << std::endl;
+#endif
+
 
     auto pheader = (const SProgramBinaryHeader *)(elf_binary + sheader->DataOffset);
 
+    std::cout << "findDeviceBinary pheader->Magic " << pheader->Magic <<
+        " MAGIC_CL "  << MAGIC_CL << std::endl;
+    std::cout << "findDeviceBinary pheader->NumberOfKernels " << pheader->NumberOfKernels << std::endl;
+    std::cout << "findDeviceBinary pheader->PatchListSize " << pheader->PatchListSize << std::endl;
+
+
     // Check for proper device binary header, with one kernel and no program patches.
+#ifndef NEO_IS_NOT_AVAILABLE
     if (pheader->Magic != MAGIC_CL || pheader->NumberOfKernels != 1 || pheader->PatchListSize != 0)
         throw bad_binary_section();
+#else
+    std::cout << "findDeviceBinary NEO_IS_NOT_AVAILABLE and MAGIC_CL is not checked" << std::endl;
+#endif
+
 
     if (sheaderOut != nullptr) *sheaderOut = sheader;
     if (pheaderOut != nullptr) *pheaderOut = pheader;

@@ -80,6 +80,11 @@ if(DNNL_ENABLE_ITT_TASKS AND NOT DNNL_CPU_RUNTIME STREQUAL "NONE")
     endif()
 endif()
 
+if(DNNL_TARGET_ARCH STREQUAL "AARCH64")
+    add_compile_definitions(NEO_IS_NOT_AVAILABLE)
+    message(WARNING "GPU plugins (OneDNN) NEO_IS_NOT_AVAILABLE add_compile_definitions added !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+endif()
+
 if(DNNL_ENABLE_MAX_CPU_ISA)
     add_definitions_with_host_compiler(-DDNNL_ENABLE_MAX_CPU_ISA)
 endif()
