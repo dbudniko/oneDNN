@@ -53,12 +53,13 @@ inline void findDeviceBinary(const std::vector<uint8_t> &binary, const SElf64Sec
     // Read ELF
     auto *eheader = (const SElf64Header *)elf_binary;
 
-    //if(DNNL_TARGET_ARCH STREQUAL "X86")
     // Check ELF header
-    std::cout << "findDeviceBinary eheader->Magic " << eheader->Magic <<
-        " ELF_MAGIC "  << ELF_MAGIC << std::endl;
-    if (eheader->Magic != ELF_MAGIC)
-        throw bad_elf();
+    if (DNNL_TARGET_ARCH STREQUAL "X86") {
+        std::cout << "findDeviceBinary eheader->Magic " << eheader->Magic <<
+            " ELF_MAGIC "  << ELF_MAGIC << std::endl;
+        if (eheader->Magic != ELF_MAGIC)
+            throw bad_elf();
+    }
 
     // Look for device binary in section table.
     auto sheader = (const SElf64SectionHeader *)(elf_binary + eheader->SectionHeadersOffset);
@@ -72,6 +73,12 @@ inline void findDeviceBinary(const std::vector<uint8_t> &binary, const SElf64Sec
             break;
         }
     }
+
+    std::cout << "findDeviceBinary found_dev_binary " << found_dev_binary << std::endl;
+    std::cout << "findDeviceBinary sheader->DataSize " << sheader->DataSize << std::endl;
+    std::cout << "findDeviceBinary  sizeof(SProgramBinaryHeader) "
+        <<  sizeof(SProgramBinaryHeader) << std::endl;
+
 
     if (!found_dev_binary || sheader->DataSize < sizeof(SProgramBinaryHeader))
         throw no_binary_section();
