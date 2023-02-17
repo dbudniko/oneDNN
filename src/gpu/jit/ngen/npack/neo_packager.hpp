@@ -143,8 +143,14 @@ inline void replaceKernel(std::vector<uint8_t> &binary, const std::vector<uint8_
     size_t start_xsum = (const unsigned char *)(kheader + 1) - elf_binary;
     size_t end_xsum = start_xsum + kheader->KernelNameSize + kheader->KernelHeapSize + heap_plus_patches;
 
+
+    std::cout << "replaceKernel kheader->CheckSum " << kheader->CheckSum << std::endl;
+#ifndef NEO_IS_NOT_AVAILABLE
     if (neo_hash(elf_binary + start_xsum, end_xsum - start_xsum) != kheader->CheckSum)
         throw invalid_checksum();
+#else
+    std::cout << "replaceKernel NEO_IS_NOT_AVAILABLE and kheader->CheckSum is not checked" << std::endl;
+#endif
 
     // Find existing kernel size and allocate memory for new binary.
     ptrdiff_t size_adjust = kernel_padded_size - kheader->KernelHeapSize + patches_size;
