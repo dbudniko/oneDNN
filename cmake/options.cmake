@@ -51,6 +51,10 @@ option(DNNL_ENABLE_CPU_ISA_HINTS
     "enables control of CPU ISA specific hints by oneDNN via DNNL_CPU_ISA_HINTS
     environment variable and dnnl_set_cpu_isa_hints() function" ON)
 
+option(DNNL_DISABLE_NEO_CHECKS
+    "disable NEO driver binary features check 
+    environment variable and dnnl_set_cpu_isa_hints() function" OFF)
+
 # =============================
 # Building properties and scope
 # =============================

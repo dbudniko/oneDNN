@@ -56,11 +56,11 @@ inline void findDeviceBinary(const std::vector<uint8_t> &binary, const SElf64Sec
     // Check ELF header
     std::cout << "findDeviceBinary eheader->Magic " << eheader->Magic <<
         " ELF_MAGIC "  << ELF_MAGIC << std::endl;
-#ifndef NEO_IS_NOT_AVAILABLE
+#ifndef DNNL_DISABLE_NEO_CHECKS
     if (eheader->Magic != ELF_MAGIC)
         throw bad_elf();
 #else
-    std::cout << "findDeviceBinary NEO_IS_NOT_AVAILABLE and ELF_MAGIC is not checked" << std::endl;
+    std::cout << "findDeviceBinary DNNL_DISABLE_NEO_CHECKS and ELF_MAGIC is not checked" << std::endl;
 #endif
 
     // Look for device binary in section table.
@@ -81,11 +81,11 @@ inline void findDeviceBinary(const std::vector<uint8_t> &binary, const SElf64Sec
     std::cout << "findDeviceBinary  sizeof(SProgramBinaryHeader) "
         <<  sizeof(SProgramBinaryHeader) << std::endl;
 
-#ifndef NEO_IS_NOT_AVAILABLE
+#ifndef DNNL_DISABLE_NEO_CHECKS
     if (!found_dev_binary || sheader->DataSize < sizeof(SProgramBinaryHeader))
         throw no_binary_section();
 #else
-    std::cout << "findDeviceBinary NEO_IS_NOT_AVAILABLE and found_dev_binary and DataSize are not checked"
+    std::cout << "findDeviceBinary DNNL_DISABLE_NEO_CHECKS and found_dev_binary and DataSize are not checked"
         << std::endl;
 #endif
 
@@ -99,11 +99,11 @@ inline void findDeviceBinary(const std::vector<uint8_t> &binary, const SElf64Sec
 
 
     // Check for proper device binary header, with one kernel and no program patches.
-#ifndef NEO_IS_NOT_AVAILABLE
+#ifndef DNNL_DISABLE_NEO_CHECKS
     if (pheader->Magic != MAGIC_CL || pheader->NumberOfKernels != 1 || pheader->PatchListSize != 0)
         throw bad_binary_section();
 #else
-    std::cout << "findDeviceBinary NEO_IS_NOT_AVAILABLE and MAGIC_CL is not checked" << std::endl;
+    std::cout << "findDeviceBinary DNNL_DISABLE_NEO_CHECKS and MAGIC_CL is not checked" << std::endl;
 #endif
 
 
@@ -145,11 +145,11 @@ inline void replaceKernel(std::vector<uint8_t> &binary, const std::vector<uint8_
 
 
     std::cout << "replaceKernel kheader->CheckSum " << kheader->CheckSum << std::endl;
-#ifndef NEO_IS_NOT_AVAILABLE
+#ifndef DNNL_DISABLE_NEO_CHECKS
     if (neo_hash(elf_binary + start_xsum, end_xsum - start_xsum) != kheader->CheckSum)
         throw invalid_checksum();
 #else
-    std::cout << "replaceKernel NEO_IS_NOT_AVAILABLE and kheader->CheckSum is not checked" << std::endl;
+    std::cout << "replaceKernel DNNL_DISABLE_NEO_CHECKS and kheader->CheckSum is not checked" << std::endl;
 #endif
 
     // Find existing kernel size and allocate memory for new binary.
